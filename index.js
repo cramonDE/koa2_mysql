@@ -57,7 +57,7 @@ async function handleRequest(ctx) {
   // console.log(ctx.body);
 }
 
-// createAllTables();
+createAllTables();
 app.use(koaBody());
 app.use(handleRequest)
 
