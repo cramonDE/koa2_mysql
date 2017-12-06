@@ -4,7 +4,7 @@ const pool = mysql.createPool({
   host     :  '127.0.0.1',
   user     :  'root',
   password :  'xiaomixm',
-  database :  'koa2_demo'
+  database :  'cat'
 })
 
 let query = function( sql, values ) {
