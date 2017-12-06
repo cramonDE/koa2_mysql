@@ -37,7 +37,7 @@ const createAllTables = async () => {
       }
     }
   }
-  await getData();
+  await initial();
   console.log('sql脚本执行结束！')
   console.log('请按 ctrl + c 键退出！')
 
@@ -52,9 +52,7 @@ async function handleRequest(ctx) {
     ctx.body = await insertItems(ctx.request.url.slice(1), ctx.request.body);
 
   }
-  // getData()
-  // ctx.body = ctx.request;
-  // console.log(ctx.body);
+
 }
 
 createAllTables();
