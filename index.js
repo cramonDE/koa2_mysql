@@ -5,6 +5,8 @@ const { query } = require('./util/db');
 const { initial } = require('./scripts/initial')
 const { selectItems } = require('./scripts/select_items');
 const { insertItems } = require('./scripts/insert_items');
+const { updateItems } = require('./scripts/update_items');
+const { deleteItems } = require('./scripts/delete_items');
 const Koa = require('koa')
 const app = new Koa()
 const koaBody = require('koa-body');
@@ -51,11 +53,15 @@ async function handleRequest(ctx) {
   } else if (ctx.request.method === 'POST') {
     ctx.body = await insertItems(ctx.request.url.slice(1), ctx.request.body);
 
-  }
+  } else if (ctx.request.method === 'PUT') {
+    ctx.body = await updateItems(ctx.request.url.slice(1), ctx.request.body);
 
+  } else if (ctx.request.method === 'DELETE') {
+    ctx.body = await deleteItems(ctx.request.url.split('?')[0].slice(1), ctx.request.query);
+  }
 }
 
-createAllTables();
+await createAllTables();
 app.use(koaBody());
 app.use(handleRequest)
 
