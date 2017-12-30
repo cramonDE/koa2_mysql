@@ -4,28 +4,34 @@ let insertItems = async function(tableName, data) {
   let sql = ``;
   switch (tableName) {
     case 'user':
-      sql = `
-        INSERT INTO ${tableName} (password, user_nickname) VALUES ('${data.password}', '${data.user_nickname}');
-      `;
+      if (data.status == 0) {
+        sql = `
+          INSERT INTO ${tableName} (password, user_nickname) VALUES ('${data.password}', '${data.user_nickname}');
+        `;
+      } else {
+        sql = `
+          SELECT * FROM ${tableName} WHERE user_id = ${data.user_id} && password = ${data.password};
+        `;
+      }
       break;
     case 'pet':
       sql = `
-        INSERT INTO ${tableName} (pet_nickname, pet_owner, pet_type, pet_weight, pet_sex, pet_birth) VALUES ('${data.pet_nickname}', '${data.pet_owner}', '${data.pet_type}', '${data.pet_weight}', '${data.pet_sex}', '${data.pet_birth}');
+        INSERT INTO ${tableName} (pet_nickname, pet_owner, pet_type, pet_weight, pet_sex, pet_birth, pet_photo) VALUES ('${data.pet_nickname}', '${data.pet_owner}', '${data.pet_type}', '${data.pet_weight}', '${data.pet_sex}', '${data.pet_birth}', '${data.pet_photo}');
       `;
       break;
-    case 'user_and_pet':
-      sql = `
-        INSERT INTO ${tableName} (user_id, pet_id) VALUES ( '${data.user_id}', '${data.pet_id}');
-      `;
-      break;
-    case 'walk':
-      sql = `
-        INSERT INTO ${tableName} (walk_stime, walk_etime, walk_pet) VALUES ('${data.walk_stime}', '${data.walk_etime}', '${data.walk_pet}');
-      `;
-      break;
+    // case 'user_and_pet':
+    //   sql = `
+    //     INSERT INTO ${tableName} (user_id, pet_id) VALUES ( '${data.user_id}', '${data.pet_id}');
+    //   `;
+    //   break;
+    // case 'walk':
+    //   sql = `
+    //     INSERT INTO ${tableName} (walk_stime, walk_etime, walk_pet) VALUES ('${data.walk_stime}', '${data.walk_etime}', '${data.walk_pet}');
+    //   `;
+    //   break;
     case 'comment':
       sql = `
-        INSERT INTO ${tableName} (com_time, com_user, com_walk) VALUES ('${data.com_time}', '${data.com_user}', '${data.com_walk}');
+        INSERT INTO ${tableName} (com_time, com_user, com_hs, com_content) VALUES ('${data.com_time}', '${data.com_user}', '${data.com_hs}', '${data.com_content}');
       `;
       break;
     case 'hotspot':
@@ -33,9 +39,14 @@ let insertItems = async function(tableName, data) {
         INSERT INTO ${tableName} (hs_time, hs_user, hs_content) VALUES ('${data.hs_time}', '${data.hs_user}', '${data.hs_content}');
       `;
       break;
-    case 'user_and_hotspot':
+    // case 'user_and_hotspot':
+    //   sql = `
+    //     INSERT INTO ${tableName} (user_id, hs_id) VALUES ( '${data.user_id}', '${data.hs_id}');
+    //   `;
+    //   break;
+    case 'pet_and_hotspot':
       sql = `
-        INSERT INTO ${tableName} (user_id, hs_id) VALUES ( '${data.user_id}', '${data.hs_id}');
+        INSERT INTO ${tableName} (pet_id, hs_id) VALUES ( '${data.pet_id}', '${data.hs_id}');
       `;
       break;
     case 'good':
@@ -50,9 +61,13 @@ let insertItems = async function(tableName, data) {
 
   console.log(sql);
   try {
-
-    let dataList = await query( sql )
-    return dataList;
+    if (data.status == 1) {
+      let dataList = await query( sql )
+      return dataList;
+    } else {
+      let dataList = await query( sql )
+      return dataList.insertId;
+    }
   } catch (e) {
     return e;
   } finally {

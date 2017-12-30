@@ -10,7 +10,7 @@ let updateItems = async function(tableName, data) {
       break;
     case 'pet':
 			sql = `
-				UPDATE ${tableName} SET pet_nickname = '${data.pet_nickname}', pet_owner = '${data.pet_owner}', pet_type = '${data.pet_type}', pet_weight = '${data.pet_weight}', pet_sex = '${data.pet_sex}', pet_birth = '${data.pet_birth}' WHERE pet_id = '${data.pet_id}' ;
+				UPDATE ${tableName} SET pet_nickname = '${data.pet_nickname}', pet_owner = '${data.pet_owner}', pet_type = '${data.pet_type}', pet_weight = '${data.pet_weight}', pet_sex = '${data.pet_sex}', pet_birth = '${data.pet_birth}', pet_photo = '${data.pet_photo}' WHERE pet_id = '${data.pet_id}' ;
 			`
       break;
 

@@ -15,45 +15,36 @@ CREATE TABLE IF NOT EXISTS `pet` (
   `pet_weight` int(32),
   `pet_sex` varchar(30),
   `pet_birth` datetime,
+  `pet_photo` varchar(30),
   CONSTRAINT FOREIGN KEY (`pet_owner`) REFERENCES `user`(`user_id`)
   ON DELETE  RESTRICT  ON UPDATE CASCADE,
   PRIMARY KEY (`pet_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS `user_and_pet` (
-  `like_id` int(32) NOT NULL AUTO_INCREMENT,
-  `user_id` int(32) NOT NULL ,
-  `pet_id` int(32) NOT NULL ,
-  PRIMARY KEY (`like_id`),
-  CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`)
-  ON DELETE  RESTRICT  ON UPDATE CASCADE,
-  CONSTRAINT FOREIGN KEY (`pet_id`) REFERENCES `pet`(`pet_id`)
-  ON DELETE  RESTRICT  ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- CREATE TABLE IF NOT EXISTS `user_and_pet` (
+--   `like_id` int(32) NOT NULL AUTO_INCREMENT,
+--   `user_id` int(32) NOT NULL ,
+--   `pet_id` int(32) NOT NULL ,
+--   PRIMARY KEY (`like_id`),
+--   CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`)
+--   ON DELETE  RESTRICT  ON UPDATE CASCADE,
+--   CONSTRAINT FOREIGN KEY (`pet_id`) REFERENCES `pet`(`pet_id`)
+--   ON DELETE  RESTRICT  ON UPDATE CASCADE
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS `walk` (
-  `walk_stime` datetime,
-  `walk_etime` datetime,
-  `walk_pet` int(32),
-  `walk_id` int(32) NOT NULL AUTO_INCREMENT,
-  CONSTRAINT FOREIGN KEY (`walk_pet`) REFERENCES `pet`(`pet_id`)
-  ON DELETE  RESTRICT  ON UPDATE CASCADE,
-  PRIMARY KEY (`walk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- CREATE TABLE IF NOT EXISTS `walk` (
+--   `walk_stime` datetime,
+--   `walk_etime` datetime,
+--   `walk_pet` int(32),
+--   `walk_id` int(32) NOT NULL AUTO_INCREMENT,
+--   CONSTRAINT FOREIGN KEY (`walk_pet`) REFERENCES `pet`(`pet_id`)
+--   ON DELETE  RESTRICT  ON UPDATE CASCADE,
+--   PRIMARY KEY (`walk_id`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
-CREATE TABLE IF NOT EXISTS `comment` (
-  `com_time` datetime,
-  `com_user` int(32),
-  `com_walk` int(32),
-  `com_id` int(32) NOT NULL AUTO_INCREMENT,
-  CONSTRAINT FOREIGN KEY (`com_user`) REFERENCES `user`(`user_id`)
-  ON DELETE  RESTRICT  ON UPDATE CASCADE,
-  CONSTRAINT FOREIGN KEY (`com_walk`) REFERENCES `walk`(`walk_id`)
-  ON DELETE  RESTRICT  ON UPDATE CASCADE,
-  PRIMARY KEY (`com_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE IF NOT EXISTS `hotspot` (
   `hs_time` datetime,
@@ -65,16 +56,41 @@ CREATE TABLE IF NOT EXISTS `hotspot` (
   PRIMARY KEY (`hs_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS `user_and_hotspot` (
-  `like_id` int(32) NOT NULL AUTO_INCREMENT,
-  `user_id` int(32) NOT NULL ,
+CREATE TABLE IF NOT EXISTS `comment` (
+  `com_time` datetime,
+  `com_user` int(32),
+  `com_hs` int(32),
+  `com_content` varchar(30),
+  `com_id` int(32) NOT NULL AUTO_INCREMENT,
+  CONSTRAINT FOREIGN KEY (`com_user`) REFERENCES `user`(`user_id`)
+  ON DELETE  RESTRICT  ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY (`com_hs`) REFERENCES `hotspot`(`hs_id`)
+  ON DELETE  RESTRICT  ON UPDATE CASCADE,
+  PRIMARY KEY (`com_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- CREATE TABLE IF NOT EXISTS `user_and_hotspot` (
+--   `like_id` int(32) NOT NULL AUTO_INCREMENT,
+--   `user_id` int(32) NOT NULL ,
+--   `hs_id` int(32) NOT NULL ,
+--   PRIMARY KEY (`like_id`),
+--   CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`)
+--   ON DELETE  RESTRICT  ON UPDATE CASCADE,
+--   CONSTRAINT FOREIGN KEY (`hs_id`) REFERENCES `hotspot`(`hs_id`)
+--   ON DELETE  RESTRICT  ON UPDATE CASCADE
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `pet_and_hotspot` (
+  `_id` int(32) NOT NULL AUTO_INCREMENT,
+  `pet_id` int(32) NOT NULL ,
   `hs_id` int(32) NOT NULL ,
-  PRIMARY KEY (`like_id`),
-  CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`)
+  PRIMARY KEY (`_id`),
+  CONSTRAINT FOREIGN KEY (`pet_id`) REFERENCES `pet`(`pet_id`)
   ON DELETE  RESTRICT  ON UPDATE CASCADE,
   CONSTRAINT FOREIGN KEY (`hs_id`) REFERENCES `hotspot`(`hs_id`)
   ON DELETE  RESTRICT  ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE IF NOT EXISTS `good` (
   `good_name` varchar(30),

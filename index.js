@@ -48,7 +48,7 @@ const createAllTables = async () => {
 async function handleRequest(ctx) {
 
   if (ctx.request.method === 'GET') {
-    ctx.body = await selectItems(ctx.request.url.slice(1));
+    ctx.body = await selectItems(ctx.request.url.split('?')[0].slice(1), ctx.request.query);
 
   } else if (ctx.request.method === 'POST') {
     ctx.body = await insertItems(ctx.request.url.slice(1), ctx.request.body);
@@ -61,7 +61,7 @@ async function handleRequest(ctx) {
   }
 }
 
-await createAllTables();
+createAllTables();
 app.use(koaBody());
 app.use(handleRequest)
 
