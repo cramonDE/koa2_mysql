@@ -15,13 +15,24 @@ let initial = async function() {
 	// 	INSERT INTO \`walk\` (walk_stime, walk_etime, walk_pet) VALUES ('2010-01-02 00:00:00', '2010-01-02 00:00:11', "1"), ('2010-01-02 00:00:00', '2010-01-02 00:00:11', "2"), ('2010-01-02 00:00:00', '2010-01-02 00:00:11', "3");
 	// `)
 
-	init_sql.push(`
-		INSERT INTO \`hotspot\` (hs_time, hs_user, hs_content) VALUES ('2010-01-02', "1", 'text1'), ('2010-01-02', "2", 'text2'), ('2010-01-02', "3", 'text3');
-	`);
+	for (var i = 0; i < 100; i++) {
+		init_sql.push(`
+			INSERT INTO \`hotspot\` (hs_time, hs_user, hs_content) VALUES ('2010-01-02', "1", 'text1${i}'), ('2010-01-02', "2", 'text2${i}'), ('2010-01-02', "3", 'text3${i}');
+		`);
+	}
 	init_sql.push(`
 		INSERT INTO \`comment\` (com_time, com_user, com_hs, com_content) VALUES ('2010-01-02', "1", "1", "11111"), ('2010-01-02', "2", "2", "22222"), ('2010-01-02', "3", "3", "33333");
 	`);
 
+	init_sql.push(`
+	INSERT INTO \`pet_and_user\` (pet_id, user_id) VALUES ( "1", "1"), ( "1", "2"), ("1", "3"), ("2", "1"), ("3", "1");
+	`);
+	init_sql.push(`
+	INSERT INTO \`notification\` (notice_status, notice_user, notice_comment) VALUES ( "1", "1", "1"), ( "1", "1", "2"), ("0", "1", "3"), ("0", "2", "1"), ("1", "3", "1");
+	`);
+	init_sql.push(`
+	INSERT INTO \`like\` (like_user, like_hotspot) VALUES ( "1", "1"), ( "1", "2"), ("1", "3"), ("2", "1"), ("3", "1");
+	`);
 	init_sql.push(`
 	INSERT INTO \`pet_and_hotspot\` (pet_id, hs_id) VALUES ( "1", "1"), ( "1", "2"), ("1", "3"), ("2", "1"), ("3", "1");
 	`);

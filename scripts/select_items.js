@@ -1,16 +1,17 @@
 const { query } = require('../util/db');
 
 let selectItems = async function(tableName, data) {
-  console.log(tableName);
   let sql = '';
   switch (tableName) {
     case 'hotspot':
       if (data.page != null) {
-        sql = `SELECT * FROM \`hotspot\` WHERE hs_id <= (SELECT COUNT(*) FROM \`hotspot\`)- ${data.page}*20 ORDER BY hs_id DESC LIMIT 20`;
+        sql = `SELECT hs_time, hs_user, hs_content, hs_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE hs_id <= (SELECT COUNT(*) FROM \`hotspot\`)- ${data.page}*20 ORDER BY hs_id DESC LIMIT 20`;
       } else if (data.pet_id != null) {
-        sql = `SELECT DISTINCT * FROM \`hotspot\` LEFT JOIN pet_and_hotspot ON hotspot.hs_id=pet_and_hotspot.hs_id WHERE pet_id = ${data.pet_id}`;
+        sql = `SELECT hs_time, hs_user, hs_content, hotspot.hs_id, pet_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN pet_and_hotspot ON hotspot.hs_id=pet_and_hotspot.hs_id  LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE pet_id = ${data.pet_id}`;
+      } else if (data.hs_id != null) {
+        sql = `SELECT hs_time, hs_user, hs_content, hotspot.hs_id, ifnull(count, 0) AS count FROM \`hotspot\`  LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE hs_id = ${data.hs_id}`;
       } else {
-        sql = `SELECT * FROM \`hotspot\` ORDER BY \`hs_id\` DESC LIMIT 20`;
+        sql = `SELECT hs_time, hs_user, hs_content, hs_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id  ORDER BY \`hs_id\` DESC LIMIT 20`;
       }
       break;
     case 'comment':
@@ -18,15 +19,26 @@ let selectItems = async function(tableName, data) {
       break;
     case 'pet':
       if (data.user_id != null) {
-        sql = `SELECT * FROM \`pet\` WHERE pet_owner = ${data.user_id}`;
-      } else {
+        sql = `SELECT pet.pet_id, pet_nickname, pet_owner, pet_type, pet_weight, pet_sex, pet_birth, pet_photo, count FROM \`pet\` LEFT JOIN (SELECT pet_id, COUNT(pet_id) AS count FROM pet_and_user GROUP BY pet_id) AS count_table ON count_table.pet_id=pet.pet_id WHERE pet_owner = ${data.user_id}`;
+      } else if (data.hs_id != null) {
         sql = `
-          SELECT DISTINCT * FROM \`pet\` LEFT JOIN (SELECT pet_id, hs_id FROM \`pet_and_hotspot\`)AS joinTable ON pet.pet_id=joinTable.pet_id WHERE hs_id = ${data.hs_id}
+          SELECT DISTINCT pet.pet_id, pet_nickname, pet_owner, pet_type, pet_weight, pet_sex, pet_birth, pet_photo, hs_id, count FROM \`pet\` LEFT JOIN (SELECT pet_id, hs_id FROM \`pet_and_hotspot\`)AS joinTable ON pet.pet_id=joinTable.pet_id LEFT JOIN (SELECT pet_id, COUNT(pet_id) AS count FROM pet_and_user GROUP BY pet_id) AS count_table ON count_table.pet_id=pet.pet_id WHERE hs_id = ${data.hs_id}
+        `
+      } else if (data.pet_id != null) {
+        sql = `
+          SELECT pet.pet_id, pet_nickname, pet_type, pet_weight, pet_sex, pet_birth, pet_photo, user_nickname FROM \`pet\` LEFT JOIN pet_and_user ON pet.pet_id = pet_and_user.pet_id LEFT JOIN user ON user.user_id = pet_and_user.user_id WHERE pet.pet_id = ${data.pet_id}
+        `
+      }
+      break;
+    case 'notification':
+      if (data.user_id != null) {
+        sql = `
+          SELECT DISTINCT notice_status, notice_user, notice_comment, notice_id, com_time, com_user, com_hs, com_content FROM ${tableName} LEFT JOIN comment ON notice_comment=comment.com_id WHERE notice_user = ${data.user_id}
         `
       }
       break;
     default:
-    sql = `SELECT * FROM ${tableName}`;
+
 
   }
 
@@ -45,6 +57,7 @@ let selectItems = async function(tableName, data) {
   //
   // }
   try {
+    if (sql == '') sql = `SELECT * FROM ${tableName}`;
     console.log(sql);
     let dataList = await query( sql )
     return dataList;

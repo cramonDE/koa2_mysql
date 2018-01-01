@@ -14,7 +14,11 @@ let deleteItems = async function(tableName, data) {
 				DELETE FROM ${tableName} WHERE com_id = '${data.com_id}' ;
 			`
       break;
-
+    case 'like':
+			sql = `
+				DELETE FROM \`${tableName}\` WHERE like_id = '${data.like_id}' ;
+			`
+      break;
     default:
 
 

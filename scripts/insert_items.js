@@ -49,6 +49,21 @@ let insertItems = async function(tableName, data) {
         INSERT INTO ${tableName} (pet_id, hs_id) VALUES ( '${data.pet_id}', '${data.hs_id}');
       `;
       break;
+    case 'pet_and_user':
+      sql = `
+        INSERT INTO ${tableName} (pet_id, user_id) VALUES ( '${data.pet_id}', '${data.user_id}');
+      `;
+      break;
+    case 'notification':
+      sql = `
+        INSERT INTO ${tableName} (notice_status, notice_user, notice_comment) VALUES ( '${data.notice_status}', '${data.notice_user}', '${data.notice_comment}');
+      `;
+      break;
+    case 'like':
+      sql = `
+        INSERT INTO \`${tableName}\` (like_user, like_hotspot) VALUES ( '${data.like_user}', '${data.like_hotspot}');
+      `;
+      break;
     case 'good':
       sql = `
         INSERT INTO ${tableName} (good_name, good_price, good_count, good_info) VALUES ('${data.good_name}', '${data.good_price}', '${data.good_count}', '${data.good_info}');
