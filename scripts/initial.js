@@ -3,7 +3,7 @@ const { query } = require('../util/db');
 let initial = async function() {
 	let init_sql = [];
 	init_sql.push(`
-	INSERT INTO \`user\` (password, user_nickname) VALUES ( '1234', '甲同学'), ( '1234', '乙同学'), ('1234', '丙同学');
+	INSERT INTO \`user\` (username, password, user_nickname) VALUES ('name1' ,'1234', '甲同学'), ( 'name2' ,'1234', '乙同学'), ('name3' ,'1234', '丙同学');
 	`);
 	init_sql.push(`
 		INSERT INTO \`pet\` (pet_nickname, pet_owner, pet_type, pet_weight, pet_sex, pet_birth, pet_photo) VALUES ('小英',"1",'英短', "20", 'female', '2010-01-02', 'test.jpg'), ('小橘',"1",'橘猫', "20", 'female', '2010-01-02', 'test.jpg'), ('小波',"1",'波斯', "20", 'female', '2010-01-02', 'test.jpg');

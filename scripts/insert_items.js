@@ -6,11 +6,15 @@ let insertItems = async function(tableName, data) {
     case 'user':
       if (data.status == 0) {
         sql = `
-          INSERT INTO ${tableName} (password, user_nickname) VALUES ('${data.password}', '${data.user_nickname}');
+          INSERT INTO ${tableName} (username, password, user_nickname) VALUES ('${data.username}','${data.password}', '${data.user_nickname}');
         `;
-      } else {
+      } else if (data.status == 1){
         sql = `
-          SELECT * FROM ${tableName} WHERE user_id = ${data.user_id} && password = ${data.password};
+          SELECT * FROM ${tableName} WHERE username = \'${data.username}\' && password = ${data.password};
+        `;
+      } else if (data.status == 2) {
+        sql = `
+          SELECT * FROM ${tableName} WHERE username = \'${data.username}\';
         `;
       }
       break;
@@ -76,7 +80,7 @@ let insertItems = async function(tableName, data) {
 
   console.log(sql);
   try {
-    if (data.status == 1) {
+    if (data.status == 1||data.status == 2) {
       let dataList = await query( sql )
       return dataList;
     } else {

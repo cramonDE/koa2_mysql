@@ -61,7 +61,7 @@ async function handleRequest(ctx) {
   }
 }
 
-createAllTables();
+// createAllTables();
 app.use(koaBody());
 app.use(handleRequest)
 
