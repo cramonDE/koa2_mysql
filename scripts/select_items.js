@@ -5,13 +5,13 @@ let selectItems = async function(tableName, data) {
   switch (tableName) {
     case 'hotspot':
       if (data.page != null) {
-        sql = `SELECT hs_time, hs_user, hs_content, hs_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE hs_id <= (SELECT COUNT(*) FROM \`hotspot\`)- ${data.page}*20 ORDER BY hs_id DESC LIMIT 20`;
+        sql = `SELECT hs_time, hs_user, hs_content,hs_photo, hs_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE hs_id <= (SELECT COUNT(*) FROM \`hotspot\`)- ${data.page}*20 ORDER BY hs_id DESC LIMIT 20`;
       } else if (data.pet_id != null) {
-        sql = `SELECT hs_time, hs_user, hs_content, hotspot.hs_id, pet_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN pet_and_hotspot ON hotspot.hs_id=pet_and_hotspot.hs_id  LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE pet_id = ${data.pet_id}`;
+        sql = `SELECT hs_time, hs_user, hs_content, hs_photo, hotspot.hs_id, pet_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN pet_and_hotspot ON hotspot.hs_id=pet_and_hotspot.hs_id  LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE pet_id = ${data.pet_id}`;
       } else if (data.hs_id != null) {
-        sql = `SELECT hs_time, hs_user, hs_content, hotspot.hs_id, ifnull(count, 0) AS count FROM \`hotspot\`  LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE hs_id = ${data.hs_id}`;
+        sql = `SELECT hs_time, hs_user, hs_content, hs_photo, hotspot.hs_id, ifnull(count, 0) AS count FROM \`hotspot\`  LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id WHERE hs_id = ${data.hs_id}`;
       } else {
-        sql = `SELECT hs_time, hs_user, hs_content, hs_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id  ORDER BY \`hs_id\` DESC LIMIT 20`;
+        sql = `SELECT hs_time, hs_user, hs_content, hs_photo, hs_id, ifnull(count, 0) AS count FROM \`hotspot\` LEFT JOIN (SELECT like_hotspot, COUNT(like_hotspot) AS count FROM \`like\` GROUP BY like_hotspot) AS count_table ON count_table.like_hotspot=hotspot.hs_id  ORDER BY \`hs_id\` DESC LIMIT 20`;
       }
       break;
     case 'comment':

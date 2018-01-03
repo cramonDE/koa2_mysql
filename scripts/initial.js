@@ -17,7 +17,7 @@ let initial = async function() {
 
 	for (var i = 0; i < 100; i++) {
 		init_sql.push(`
-			INSERT INTO \`hotspot\` (hs_time, hs_user, hs_content) VALUES ('2010-01-02', "1", 'text1${i}'), ('2010-01-02', "2", 'text2${i}'), ('2010-01-02', "3", 'text3${i}');
+			INSERT INTO \`hotspot\` (hs_time, hs_user, hs_content, hs_photo) VALUES ('2010-01-02', "1", 'text1${i}', 'test.jpg'), ('2010-01-02', "2", 'text2${i}','test.jpg'), ('2010-01-02', "3", 'text3${i}','test.jpg');
 		`);
 	}
 	init_sql.push(`

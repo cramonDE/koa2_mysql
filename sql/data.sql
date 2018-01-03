@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `hotspot` (
   `hs_time` varchar(30),
   `hs_user` int(32),
   `hs_content` varchar(30),
+  `hs_photo` varchar(30),
   `hs_id` int(32) NOT NULL AUTO_INCREMENT,
   CONSTRAINT FOREIGN KEY (`hs_user`) REFERENCES `user`(`user_id`)
   ON DELETE  RESTRICT  ON UPDATE CASCADE,

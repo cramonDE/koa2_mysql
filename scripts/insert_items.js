@@ -10,7 +10,7 @@ let insertItems = async function(tableName, data) {
         `;
       } else if (data.status == 1){
         sql = `
-          SELECT * FROM ${tableName} WHERE username = \'${data.username}\' && password = ${data.password};
+          SELECT * FROM ${tableName} WHERE username = \'${data.username}\' && password = \'${data.password}\';
         `;
       } else if (data.status == 2) {
         sql = `
@@ -40,7 +40,7 @@ let insertItems = async function(tableName, data) {
       break;
     case 'hotspot':
       sql = `
-        INSERT INTO ${tableName} (hs_time, hs_user, hs_content) VALUES ('${data.hs_time}', '${data.hs_user}', '${data.hs_content}');
+        INSERT INTO ${tableName} (hs_time, hs_user, hs_content, hs_photo) VALUES ('${data.hs_time}', '${data.hs_user}', '${data.hs_content}', '${data.hs_photo}');
       `;
       break;
     // case 'user_and_hotspot':
