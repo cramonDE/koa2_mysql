@@ -49,9 +49,17 @@ let insertItems = async function(tableName, data) {
     //   `;
     //   break;
     case 'pet_and_hotspot':
+      console.log(JSON.parse(data.multiPost));
+      let postData = JSON.parse(data.multiPost);
       sql = `
-        INSERT INTO ${tableName} (pet_id, hs_id) VALUES ( '${data.pet_id}', '${data.hs_id}');
+        INSERT INTO ${tableName} (pet_id, hs_id) VALUES 
       `;
+      for (let item of postData) {
+        let insertPart = '(' + item.pet_id+ ', ' + item.hs_id + '),';
+        sql += insertPart;
+      }
+      sql = sql.substr(0, sql.length -1);
+      console.log(sql);
       break;
     case 'pet_and_user':
       sql = `

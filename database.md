@@ -1,6 +1,6 @@
 > phpmyadmin管理界面
 >
-> url:120.78.169.206/phpmyadmin
+> url:127.0.0.1/phpmyadmin
 >
 > username:root
 >
@@ -8,18 +8,24 @@
 >
 > database:cat
 
+
+> 内容更新
+> - 查询动态,评论,通知,宠物都返回了用户昵称的字段
+> - 增加了查看用户关注的宠物列表的接口
+> - 增加了批量增加关注功能的接口
+
 ### 获取列表当中的相关数据
 
 ```bash
-curl -X GET  120.78.169.206:3000/user
-curl -X GET  120.78.169.206:3000/pet
-curl -X GET  120.78.169.206:3000/comment
-curl -X GET  120.78.169.206:3000/hotspot
-curl -X GET  120.78.169.206:3000/pet_and_hotspot
-curl -X GET  120.78.169.206:3000/good
-curl -X GET  120.78.169.206:3000/pet_and_user
-curl -X GET  120.78.169.206:3000/notification
-curl -X GET  120.78.169.206:3000/like
+curl -X GET  127.0.0.1:3000/user
+curl -X GET  127.0.0.1:3000/pet
+curl -X GET  127.0.0.1:3000/comment
+curl -X GET  127.0.0.1:3000/hotspot
+curl -X GET  127.0.0.1:3000/pet_and_hotspot
+curl -X GET  127.0.0.1:3000/good
+curl -X GET  127.0.0.1:3000/pet_and_user
+curl -X GET  127.0.0.1:3000/notification
+curl -X GET  127.0.0.1:3000/\like
 ```
 ### 插入列表中的项
 
@@ -29,24 +35,24 @@ curl -X GET  120.78.169.206:3000/like
 
 ```bash
 //0表示插入
-curl -X POST --data "password=123&&user_nickname=丁同学&&status=0" 120.78.169.206:3000/user
+curl -X POST --data "username=123&&password=丁同学&&user_nickname=0&&status=0" 127.0.0.1:3000/user
 
-curl -X POST --data "pet_nickname=小美&&pet_owner=1&&pet_type=美短&&pet_weight=20&&pet_sex=female&&pet_birth=2010-01-02&&pet_photo=test.jpg" 120.78.169.206:3000/pet
+curl -X POST --data "pet_nickname=小美&&pet_owner=1&&pet_type=美短&&pet_weight=20&&pet_sex=female&&pet_birth=2010-01-02&&pet_photo=test.jpg" 127.0.0.1:3000/pet
 
-curl -X POST --data "hs_time=2010-01-02 00:00:11&&hs_user=4&&hs_content=text4" 120.78.169.206:3000/hotspot
+curl -X POST --data "hs_time=2010-01-02 00:00:11&&hs_user=4&&hs_content=text4" 127.0.0.1:3000/hotspot
 
-curl -X POST --data "com_time=2010-01-02&&com_user=3&&com_hs=4&&com_content=test4" 120.78.169.206:3000/comment
+curl -X POST --data "com_time=2010-01-02&&com_user=3&&com_hs=4&&com_content=test4" 127.0.0.1:3000/comment
 
-curl -X POST --data "pet_id=4&&hs_id=4" 120.78.169.206:3000/pet_and_hotspot
+curl -X POST --data "multiPost=[{\"pet_id\":\"1\",\"hs_id\":\"1\"},{\"pet_id\":\"1\",\"hs_id\":\"1\"},{\"pet_id\":\"1\",\"hs_id\":\"1\"}]" 127.0.0.1:3000/pet_and_hotspot
 
-curl -X POST --data "pet_id=2&&user_id=2" 120.78.169.206:3000/pet_and_user
+curl -X POST --data "pet_id=2&&user_id=2" 127.0.0.1:3000/pet_and_user
 
-curl -X POST --data "notice_status=0&&notice_user=1&&notice_comment=3" 120.78.169.206:3000/notification
+curl -X POST --data "notice_status=0&&notice_user=1&&notice_comment=3" 127.0.0.1:3000/notification
 
-curl -X POST --data "like_user=2&&like_hotspot=4" 120.78.169.206:3000/like
+curl -X POST --data "like_user=2&&like_hotspot=4" 127.0.0.1:3000/like
 
 
-curl -X POST --data "good_name=猫粮4&&good_price=400&&good_count=10&&good_info=还行" 120.78.169.206:3000/good
+curl -X POST --data "good_name=猫粮4&&good_price=400&&good_count=10&&good_info=还行" 127.0.0.1:3000/good
 
 ```
 
@@ -56,11 +62,11 @@ curl -X POST --data "good_name=猫粮4&&good_price=400&&good_count=10&&good_info
 - 更新通知已读未读
 
 ```bash
-curl -X PUT --data "password=345&&user_nickname=甲同学1&&user_id=1" 120.78.169.206:3000/user
+curl -X PUT --data "password=345&&user_nickname=甲同学1&&user_id=1" 127.0.0.1:3000/user
 
-curl -X PUT --data "pet_nickname=小黑&&pet_owner=1&&pet_type=暹罗&&pet_weight=30&&pet_sex=male&&pet_birth=2010-01-02&&pet_id=1&&pet_photo=test2.jpg" 120.78.169.206:3000/pet
+curl -X PUT --data "pet_nickname=小黑&&pet_owner=1&&pet_type=暹罗&&pet_weight=30&&pet_sex=male&&pet_birth=2010-01-02&&pet_id=1&&pet_photo=test2.jpg" 127.0.0.1:3000/pet
 
-curl -X PUT --data "notice_status=0&&notice_id=1" 120.78.169.206:3000/notification
+curl -X PUT --data "notice_status=0&&notice_id=1" 127.0.0.1:3000/notification
 ```
 
 ### 删除功能
@@ -68,8 +74,8 @@ curl -X PUT --data "notice_status=0&&notice_id=1" 120.78.169.206:3000/notificati
 - 删除点赞
 
 ```bash
-curl -X DELETE 120.78.169.206:3000/comment\?com_id=1
-curl -X DELETE 120.78.169.206:3000/like\?like_id=1
+curl -X DELETE 127.0.0.1:3000/comment\?com_id=1
+curl -X DELETE 127.0.0.1:3000/like\?like_id=1
 ```
 
 ### 功能点
@@ -82,45 +88,57 @@ curl -X DELETE 120.78.169.206:3000/like\?like_id=1
 - 根据id查询动态信息
 
 ```bash
-curl -X GET 120.78.169.206:3000/hotspot\?pet_id=1
-curl -X GET 120.78.169.206:3000/hotspot\?page=0
-curl -X GET 120.78.169.206:3000/hotspot
-curl -X GET 120.78.169.206:3000/hotspot\?hs_id=1
+curl -X GET 127.0.0.1:3000/hotspot\?pet_id=1
+curl -X GET 127.0.0.1:3000/hotspot\?page=0
+curl -X GET 127.0.0.1:3000/hotspot
+curl -X GET 127.0.0.1:3000/hotspot\?hs_id=1
 ```
 
 > 登录注册验证(返回查询的数组)
 
 ```
 //登录用户名和密码验证
-curl -X POST --data "password=1234&&username=1&&status=1" 120.78.169.206:3000/user
+curl -X POST --data "password=1234&&username=1&&status=1" 127.0.0.1:3000/user
 //注册用户名唯一
-curl -X POST --data "username=name1&&status=2" 120.78.169.206:3000/user
+curl -X POST --data "username=name1&&status=2" 127.0.0.1:3000/user
 ```
 
 > 查看动态详情里面的相关评论
 
 ```
-curl -X GET 120.78.169.206:3000/comment\?hs_id=2
+curl -X GET 127.0.0.1:3000/comment\?hs_id=2
 ```
 
 > 根据用户id查看拥有的宠物(**增加了count字段表示粉丝数**)
 
+- 查看用户拥有的宠物(status=1)
+- 查看用户关注的宠物(status=0)
+
 ```
-curl -X GET 120.78.169.206:3000/pet\?user_id=1
+curl -X GET 127.0.0.1:3000/pet\?user_id=1&&status=1
+curl -X GET 127.0.0.1:3000/pet\?user_id=1&&status=0
 ```
 
 > 查看相关动态关联的宠物(**增加了count字段表示粉丝数**)
 
 ```
-curl -X GET 120.78.169.206:3000/pet\?hs_id=1
+curl -X GET 127.0.0.1:3000/pet\?hs_id=1
 ```
 
 > 看看用户通知(相关评论内容也可以看到)
 
 ```
-curl -X GET 120.78.169.206:3000/notification\?user_id=1
+curl -X GET 127.0.0.1:3000/notification\?user_id=1
 ```
 
 > 查看宠物的粉丝
 
-curl -X GET 120.78.169.206:3000/pet\?pet_id=1
+```
+curl -X GET 127.0.0.1:3000/pet\?pet_id=1
+```
+
+> 查看相关用户点赞的条目
+
+```
+curl -X GET 127.0.0.1:3000/like\?user_id=1
+```
