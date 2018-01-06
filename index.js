@@ -51,6 +51,7 @@ async function handleRequest(ctx) {
     ctx.body = await selectItems(ctx.request.url.split('?')[0].slice(1), ctx.request.query);
 
   } else if (ctx.request.method === 'POST') {
+	console.log(ctx.request);
     ctx.body = await insertItems(ctx.request.url.slice(1), ctx.request.body);
 
   } else if (ctx.request.method === 'PUT') {
@@ -61,7 +62,7 @@ async function handleRequest(ctx) {
   }
 }
 
-// createAllTables();
+//createAllTables();
 app.use(koaBody());
 app.use(handleRequest)
 
