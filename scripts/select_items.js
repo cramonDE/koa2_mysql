@@ -39,7 +39,7 @@ let selectItems = async function(tableName, data) {
     case 'notification':
       if (data.user_id != null) {
         sql = `
-          SELECT DISTINCT notice_status, notice_user, user_nickname,  notice_comment, notice_id, com_time, com_user, com_hs, com_content FROM ${tableName} LEFT JOIN comment ON notice_comment=comment.com_id LEFT JOIN user ON user.user_id = notice_user WHERE notice_user = ${data.user_id}
+          SELECT DISTINCT notice_status, notice_user,  notice_comment, notice_id, com_time, com_user, user_nickname, com_hs, com_content FROM ${tableName} LEFT JOIN comment ON notice_comment=comment.com_id LEFT JOIN user ON user.user_id = com_user WHERE notice_user = ${data.user_id}
         `
       }
       break;

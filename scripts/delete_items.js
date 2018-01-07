@@ -19,6 +19,11 @@ let deleteItems = async function(tableName, data) {
 				DELETE FROM \`${tableName}\` WHERE like_id = '${data.like_id}' ;
 			`
       break;
+    case 'pet_and_user':
+      sql = `
+        DELETE FROM \`${tableName}\` WHERE pet_id = '${data.pet_id}'&&user_id = '${data.user_id}' ;
+      `
+      break;
     default:
 
 
